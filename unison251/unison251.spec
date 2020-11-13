@@ -33,7 +33,7 @@ Summary:   Multi-master File synchronization tool
 License:   GPLv3+
 URL:       http://www.cis.upenn.edu/~bcpierce/unison
 Source0:   https://github.com/bcpierce00/unison/archive/v%{git_tag}/unison-%{version}.tar.gz
-Source1:   unison.png
+#Source1:   unison.png
 
 # can't make this noarch (rpmbuild fails about unpackaged debug files)
 # BuildArch:     noarch
@@ -135,7 +135,8 @@ ln -s %{_bindir}/unison-gtk-%{ver_compat} %{buildroot}%{_bindir}/unison-%{ver_co
 cp -a unison-text %{buildroot}%{_bindir}/unison-text-%{ver_compat}
 
 mkdir -p %{buildroot}%{_datadir}/pixmaps
-cp -a %{SOURCE1} %{buildroot}%{_datadir}/pixmaps/%{name}.png
+#cp -a %{SOURCE1} %{buildroot}%{_datadir}/pixmaps/%{name}.png
+cp -a icons/U.svg %{buildroot}%{_datadir}/pixmaps/%{name}.svg
 
 desktop-file-install --dir %{buildroot}%{_datadir}/applications \
     %{name}.desktop
@@ -184,7 +185,7 @@ fi
 %{_bindir}/unison-gtk-%{ver_compat}
 %{_bindir}/unison-%{ver_compat}
 %{_datadir}/applications/%{name}.desktop
-%{_datadir}/pixmaps/%{name}.png
+%{_datadir}/pixmaps/%{name}.svg
 
 
 %files text
