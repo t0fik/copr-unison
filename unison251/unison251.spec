@@ -117,10 +117,10 @@ EOF
 unset MAKEFLAGS
 
 # we compile 2 versions: gtk2 ui and text ui
-make NATIVE=true UISTYLE=gtk2 THREADS=true OCAMLOPT="ocamlopt -g"
+make NATIVE=true UISTYLE=gtk2 THREADS=true OCAMLOPT="ocamlopt -g" src
 mv src/unison unison-gtk
 
-make NATIVE=true UISTYLE=text THREADS=true OCAMLOPT="ocamlopt -g"
+make NATIVE=true UISTYLE=text THREADS=true OCAMLOPT="ocamlopt -g" src
 mv src/unison unison-text
 
 make NATIVE=true docs
@@ -194,6 +194,9 @@ fi
 
 
 %changelog
+* Fri Nov 13 2020 Jerzy Drozdz <jerzy.drozdz@jdsieci.pl> - 2.51.3-2
+- Fixed GTK package
+
 * Fri Nov 13 2020 Jerzy Drozdz <jerzy.drozdz@jdsieci.pl> - 2.51.3-1
 - Rebuild for OCaml 4.11
 
