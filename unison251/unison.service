@@ -1,0 +1,7 @@
+[Unit]
+Description=Unison service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/unison -logfile $HOME/.unison/service.log -repeat watch -auto -batch
+

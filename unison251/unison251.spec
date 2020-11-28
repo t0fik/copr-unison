@@ -26,14 +26,14 @@
 
 Name:      unison%{ver_compat_name}
 Version:   %{ver_compat}%{ver_noncompat}
-Release:   3%{?dist}
+Release:   4%{?dist}
 
 Summary:   Multi-master File synchronization tool
 
 License:   GPLv3+
 URL:       http://www.cis.upenn.edu/~bcpierce/unison
 Source0:   https://github.com/bcpierce00/unison/archive/v%{git_tag}/unison-%{version}.tar.gz
-#Source1:   unison.png
+Source1:   unison.service
 
 # can't make this noarch (rpmbuild fails about unpackaged debug files)
 # BuildArch:     noarch
@@ -127,21 +127,23 @@ mv src/unison-fsmonitor unison-fsmonitor
 make NATIVE=true docs
 
 %install
-mkdir -p %{buildroot}%{_bindir}
 
-cp -a unison-gtk %{buildroot}%{_bindir}/unison-gtk-%{ver_compat}
+install -m 755 -D unison-gtk %{buildroot}%{_bindir}/unison-gtk-%{ver_compat}
 # symlink for compatibility
 ln -s %{_bindir}/unison-gtk-%{ver_compat} %{buildroot}%{_bindir}/unison-%{ver_compat}
 
-cp -a unison-text %{buildroot}%{_bindir}/unison-text-%{ver_compat}
-cp -a unison-fsmonitor %{buildroot}%{_bindir}/unison-fsmonitor-%{ver_compat}
+install -m 755 -D unison-text %{buildroot}%{_bindir}/unison-text-%{ver_compat}
+install -m 755 -D unison-fsmonitor %{buildroot}%{_bindir}/unison-fsmonitor-%{ver_compat}
 
-mkdir -p %{buildroot}%{_datadir}/pixmaps
+#mkdir -p %{buildroot}%{_datadir}/pixmaps
 #cp -a %{SOURCE1} %{buildroot}%{_datadir}/pixmaps/%{name}.png
-cp -a icons/U.svg %{buildroot}%{_datadir}/pixmaps/%{name}.svg
+install -D icons/U.svg %{buildroot}%{_datadir}/pixmaps/%{name}.svg
 
 desktop-file-install --dir %{buildroot}%{_datadir}/applications \
     %{name}.desktop
+
+
+install -D %{SOURCE1} %{buildroot}%{_userunitdir}/unison.service
 
 # create/own alternatives target
 touch %{buildroot}%{_bindir}/unison
@@ -207,15 +209,19 @@ fi
 %{_bindir}/unison-fsmonitor-%{ver_compat}
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/pixmaps/%{name}.svg
-
+%{_userunitdir}/unison.service
 
 %files text
 %ghost %{_bindir}/unison
 %{_bindir}/unison-text-%{ver_compat}
 %{_bindir}/unison-fsmonitor-%{ver_compat}
+%{_userunitdir}/unison.service
 
 
 %changelog
+* Sat Nov 28 2020 Jerzy Drozdz <jerzy.drozdz@jdsieci.pl> - 2.51.3-4
+- Added unison.service file
+
 * Sat Nov 28 2020 Jerzy Drozdz <jerzy.drozdz@jdsieci.pl> - 2.51.3-3
 - Added unison-fsmonitor to package
 
