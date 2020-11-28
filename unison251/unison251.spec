@@ -26,7 +26,7 @@
 
 Name:      unison%{ver_compat_name}
 Version:   %{ver_compat}%{ver_noncompat}
-Release:   2%{?dist}
+Release:   3%{?dist}
 
 Summary:   Multi-master File synchronization tool
 
@@ -122,6 +122,7 @@ mv src/unison unison-gtk
 
 make NATIVE=true UISTYLE=text THREADS=true OCAMLOPT="ocamlopt -g" src
 mv src/unison unison-text
+mv src/unison-fsmonitor unison-fsmonitor
 
 make NATIVE=true docs
 
@@ -133,6 +134,7 @@ cp -a unison-gtk %{buildroot}%{_bindir}/unison-gtk-%{ver_compat}
 ln -s %{_bindir}/unison-gtk-%{ver_compat} %{buildroot}%{_bindir}/unison-%{ver_compat}
 
 cp -a unison-text %{buildroot}%{_bindir}/unison-text-%{ver_compat}
+cp -a unison-fsmonitor %{buildroot}%{_bindir}/unison-fsmonitor-%{ver_compat}
 
 mkdir -p %{buildroot}%{_datadir}/pixmaps
 #cp -a %{SOURCE1} %{buildroot}%{_datadir}/pixmaps/%{name}.png
@@ -153,10 +155,19 @@ alternatives \
   %{_bindir}/unison-%{ver_compat} \
   %{ver_priority}
 
+alternatives \
+  --install \
+  %{_bindir}/unison-fsmonitor \
+  unison-fsmonitor \
+  %{_bindir}/unison-fsmonitor-%{ver_compat} \
+  %{ver_priority}
+
 %postun gtk
 if [ $1 -eq 0 ]; then
   alternatives --remove unison \
     %{_bindir}/unison-%{ver_compat}
+  alternatives --remove unison-fsmonitor \
+    %{_bindir}/unison-fsmonitor-%{ver_compat}  
 fi
 
 
@@ -168,11 +179,20 @@ alternatives \
   %{_bindir}/unison-text-%{ver_compat} \
   %{ver_priority}
 
+alternatives \
+  --install \
+  %{_bindir}/unison-fsmonitor \
+  unison-fsmonitor \
+  %{_bindir}/unison-fsmonitor-%{ver_compat} \
+  %{ver_priority}
+
 
 %postun text
 if [ $1 -eq 0 ]; then
   alternatives --remove unison \
     %{_bindir}/unison-text-%{ver_compat}
+  alternatives --remove unison-fsmonitor \
+    %{_bindir}/unison-fsmonitor-%{ver_compat}  
 fi
 
 
@@ -184,6 +204,7 @@ fi
 %ghost %{_bindir}/unison
 %{_bindir}/unison-gtk-%{ver_compat}
 %{_bindir}/unison-%{ver_compat}
+%{_bindir}/unison-fsmonitor-%{ver_compat}
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/pixmaps/%{name}.svg
 
@@ -191,9 +212,13 @@ fi
 %files text
 %ghost %{_bindir}/unison
 %{_bindir}/unison-text-%{ver_compat}
+%{_bindir}/unison-fsmonitor-%{ver_compat}
 
 
 %changelog
+* Sat Nov 28 2020 Jerzy Drozdz <jerzy.drozdz@jdsieci.pl> - 2.51.3-3
+- Added unison-fsmonitor to package
+
 * Fri Nov 13 2020 Jerzy Drozdz <jerzy.drozdz@jdsieci.pl> - 2.51.3-2
 - Fixed GTK package
 
