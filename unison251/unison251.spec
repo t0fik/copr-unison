@@ -26,7 +26,7 @@
 
 Name:      unison%{ver_compat_name}
 Version:   %{ver_compat}%{ver_noncompat}
-Release:   4%{?dist}
+Release:   5%{?dist}
 
 Summary:   Multi-master File synchronization tool
 
@@ -219,6 +219,9 @@ fi
 
 
 %changelog
+* Sun Nov 29 2020 Jerzy Drozdz <jerzy.drozdz@jdsieci.pl> - 2.51.3-5
+- Fixed running unison as systemd service
+
 * Sat Nov 28 2020 Jerzy Drozdz <jerzy.drozdz@jdsieci.pl> - 2.51.3-4
 - Added unison.service file
 
