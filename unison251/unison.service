@@ -3,9 +3,8 @@ Description=Unison file synchronization service
 Documentation=https://www.cis.upenn.edu/~bcpierce/unison/
 
 [Service]
-Environment=DISPLAY=
 Type=exec
-ExecStart=/usr/bin/unison -logfile=.unison/service.log -repeat=watch -auto -batch -terse
+ExecStart=/usr/bin/unison -ui=text -logfile=.unison/service.log -repeat=watch -auto -batch -terse
 Restart=on-failure
 RestartSec=10
 

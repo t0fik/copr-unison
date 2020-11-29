@@ -26,7 +26,7 @@
 
 Name:      unison%{ver_compat_name}
 Version:   %{ver_compat}%{ver_noncompat}
-Release:   6%{?dist}
+Release:   7%{?dist}
 
 Summary:   Multi-master File synchronization tool
 
@@ -228,6 +228,9 @@ fi
 
 
 %changelog
+* Sun Nov 29 2020 Jerzy Drozdz <jerzy.drozdz@jdsieci.pl> - 2.51.3-7
+- Added -ui argument to service command line
+
 * Sun Nov 29 2020 Jerzy Drozdz <jerzy.drozdz@jdsieci.pl> - 2.51.3-6
 - Fixed enabling unison service
 - Added restartig service on failure
