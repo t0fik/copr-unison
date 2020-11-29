@@ -26,7 +26,7 @@
 
 Name:      unison%{ver_compat_name}
 Version:   %{ver_compat}%{ver_noncompat}
-Release:   5%{?dist}
+Release:   6%{?dist}
 
 Summary:   Multi-master File synchronization tool
 
@@ -183,6 +183,13 @@ alternatives \
 
 alternatives \
   --install \
+  %{_bindir}/unison-text \
+  unison-text \
+  %{_bindir}/unison-text-%{ver_compat} \
+  %{ver_priority}
+
+alternatives \
+  --install \
   %{_bindir}/unison-fsmonitor \
   unison-fsmonitor \
   %{_bindir}/unison-fsmonitor-%{ver_compat} \
@@ -192,6 +199,8 @@ alternatives \
 %postun text
 if [ $1 -eq 0 ]; then
   alternatives --remove unison \
+    %{_bindir}/unison-text-%{ver_compat}
+  alternatives --remove unison-text \
     %{_bindir}/unison-text-%{ver_compat}
   alternatives --remove unison-fsmonitor \
     %{_bindir}/unison-fsmonitor-%{ver_compat}  
@@ -219,6 +228,11 @@ fi
 
 
 %changelog
+* Sun Nov 29 2020 Jerzy Drozdz <jerzy.drozdz@jdsieci.pl> - 2.51.3-6
+- Fixed enabling unison service
+- Added restartig service on failure
+- Added $DISPLAY variable unset in service
+
 * Sun Nov 29 2020 Jerzy Drozdz <jerzy.drozdz@jdsieci.pl> - 2.51.3-5
 - Fixed running unison as systemd service
 
