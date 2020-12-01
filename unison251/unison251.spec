@@ -26,7 +26,7 @@
 
 Name:      unison%{ver_compat_name}
 Version:   %{ver_compat}%{ver_noncompat}
-Release:   7%{?dist}
+Release:   8%{?dist}
 
 Summary:   Multi-master File synchronization tool
 
@@ -228,6 +228,10 @@ fi
 
 
 %changelog
+* Tue Dec 01 2020 Jerzy Drozdz <jerzy.drozdz@jdsieci.pl> - 2.51.3-8
+- Added setting system limits in systemd unit
+- Service KillMode set to process
+
 * Sun Nov 29 2020 Jerzy Drozdz <jerzy.drozdz@jdsieci.pl> - 2.51.3-7
 - Added -ui argument to service command line
 

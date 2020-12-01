@@ -7,6 +7,9 @@ Type=exec
 ExecStart=/usr/bin/unison -ui=text -logfile=.unison/service.log -repeat=watch -auto -batch -terse
 Restart=on-failure
 RestartSec=10
+LimitNOFILE=infinity
+LimitSTACK=infinity
+KillMode=process
 
 [Install]
 WantedBy=default.target
