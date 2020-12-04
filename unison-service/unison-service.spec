@@ -9,6 +9,8 @@ Summary: Service definition and required files for Unison
 Source0: unison.service
 Source1: stop-unison
 
+BuildRequires: systemd-rpm-macros
+
 %description
 Systemd service files for Unison file-synchronization tool.
 
