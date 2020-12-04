@@ -26,14 +26,13 @@
 
 Name:      unison%{ver_compat_name}
 Version:   %{ver_compat}%{ver_noncompat}
-Release:   8%{?dist}
+Release:   9%{?dist}
 
 Summary:   Multi-master File synchronization tool
 
 License:   GPLv3+
 URL:       http://www.cis.upenn.edu/~bcpierce/unison
 Source0:   https://github.com/bcpierce00/unison/archive/v%{git_tag}/unison-%{version}.tar.gz
-Source1:   unison.service
 
 # can't make this noarch (rpmbuild fails about unpackaged debug files)
 # BuildArch:     noarch
@@ -143,7 +142,6 @@ desktop-file-install --dir %{buildroot}%{_datadir}/applications \
     %{name}.desktop
 
 
-install -D %{SOURCE1} %{buildroot}%{_userunitdir}/unison.service
 
 # create/own alternatives target
 touch %{buildroot}%{_bindir}/unison
@@ -218,16 +216,17 @@ fi
 %{_bindir}/unison-fsmonitor-%{ver_compat}
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/pixmaps/%{name}.svg
-%{_userunitdir}/unison.service
 
 %files text
 %ghost %{_bindir}/unison
 %{_bindir}/unison-text-%{ver_compat}
 %{_bindir}/unison-fsmonitor-%{ver_compat}
-%{_userunitdir}/unison.service
 
 
 %changelog
+* Fri Dec 04 2020 Jerzy Drozdz <jerzy.drozdz@jdsieci.pl> - 2.51.3-9
+- Service file moved to seperate package
+
 * Tue Dec 01 2020 Jerzy Drozdz <jerzy.drozdz@jdsieci.pl> - 2.51.3-8
 - Added setting system limits in systemd unit
 - Service KillMode set to process

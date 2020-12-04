@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -euo pipefail
+
+#Wait for locks removed
+inotifywait -e delete_self ${HOME}/.unison/lk* || true
+
+kill -TERM $1
+
