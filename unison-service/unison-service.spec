@@ -3,8 +3,8 @@ Version: 0.1.0
 Release: 1%{?dist}
 License:   GPLv3+
 URL: https://github.com/t0fik/copr-unison
-Requires: %{_sbindir}/unison
-Requires: %{_sbindir}/inotifywait
+Requires: %{_bindir}/unison
+Requires: %{_bindir}/inotifywait
 Summary: Service definition and required files for Unison
 Source0: unison.service
 Source1: stop-unison
