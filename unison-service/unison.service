@@ -10,8 +10,9 @@ Restart=on-failure
 RestartSec=10
 LimitNOFILE=infinity
 LimitSTACK=infinity
-KillMode=process
-TimeoutStopSec=2m
+#KillMode=process
+TimeoutStopSec=3m
+StandardOutput=null
 StandardError=journal
 
 [Install]
