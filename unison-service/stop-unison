@@ -1,9 +1,23 @@
-#!/bin/bash
+#!/usr/bin/bash
 
 set -euo pipefail
 
+timeout=120
+
+child_pids=( $(ps -eo pid=,ppid= | awk -vPPID=$1 '$2==PPID{print $1}') )
+
 #Wait for locks removed
-inotifywait -e delete_self ${HOME}/.unison/lk* || true
+inotifywait -e delete_self ${HOME}/.unison/lk* 2>/dev/null || true
 
 kill -TERM $1
+
+i=0
+while true; do
+  [[ -z $(ps -o pid= -p ${child_pids[@]}) ]] && break
+  [[ ${i} -ge ${timeout} ]] && break
+  i=$((i+1))
+  sleep 1
+done
+
+exit 0
 
