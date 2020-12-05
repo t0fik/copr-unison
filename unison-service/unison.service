@@ -4,7 +4,7 @@ Documentation=https://www.cis.upenn.edu/~bcpierce/unison/
 
 [Service]
 Type=exec
-ExecStart=/usr/bin/unison -ui=text -logfile=.unison/service.log -repeat=watch -auto -batch -terse
+ExecStart=/usr/bin/unison -ui=text -logfile=/dev/null -repeat=watch -auto -batch -terse
 ExecStop=/usr/libexec/unison/stop-unison $MAINPID
 Restart=on-failure
 RestartSec=10
