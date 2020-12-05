@@ -1,5 +1,5 @@
 Name: unison-service
-Version: 0.2.0
+Version: 0.2.1
 Release: 1%{?dist}
 License:   GPLv3+
 URL: https://github.com/t0fik/copr-unison
@@ -25,6 +25,12 @@ install -m755 -D %{SOURCE1} %{buildroot}%{_libexecdir}/unison/stop-unison
 %{_libexecdir}/unison/stop-unison
 
 %changelog
+* Sat Dec 05 2020 Jerzy Drozdz <jerzy.drozdz@jdsieci.pl> - 0.2.1-1
+- All options except -ui=text moved do environment variable
+- Option -logfile set to /dev/null
+- Added EnvironmentFile option to unit file
+- Added ConditionPathIsDirectory to unit file
+
 * Sat Dec 05 2020 Jerzy Drozdz <jerzy.drozdz@jdsieci.pl> - 0.2.0-1
 - Resolved problem with 'Main process exited, code=exited, status=2/INVALIDARGUMENT'
 - stop-unison waits for child processes to exit

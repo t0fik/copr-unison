@@ -1,16 +1,19 @@
 [Unit]
 Description=Unison file synchronization service
 Documentation=https://www.cis.upenn.edu/~bcpierce/unison/
+ConditionPathIsDirectory=%h/.unison
 
 [Service]
 Type=exec
-ExecStart=/usr/bin/unison -ui=text -logfile=/dev/null -repeat=watch -auto -batch -terse
+Environment=PROFILE=default
+Environment="ARGS=-logfile=/dev/null -terse -repeat=watch -auto -batch"
+EnvironmentFile=-%h/.unison/service-config
+ExecStart=/usr/bin/unison -ui=text $ARGS $PROFILE
 ExecStop=/usr/libexec/unison/stop-unison $MAINPID
 Restart=on-failure
 RestartSec=10
 LimitNOFILE=infinity
 LimitSTACK=infinity
-#KillMode=process
 TimeoutStopSec=3m
 StandardOutput=null
 StandardError=journal
