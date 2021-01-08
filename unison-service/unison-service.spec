@@ -20,7 +20,7 @@ Systemd service files for Unison file-synchronization tool.
 %install
 install -D %{SOURCE0} %{buildroot}%{_userunitdir}/unison.service
 install -m755 -D %{SOURCE1} %{buildroot}%{_libexecdir}/unison/stop-unison
-install -m755 -D ${SOURCE2} %{buildroot}%{_libexecdir}/unison/sshcmd
+install -m755 -D %{SOURCE2} %{buildroot}%{_libexecdir}/unison/sshcmd
 
 %files
 %{_userunitdir}/unison.service
