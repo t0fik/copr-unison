@@ -6,9 +6,10 @@ ConditionPathIsDirectory=%h/.unison
 [Service]
 Type=exec
 Environment=PROFILE=default
+Environment=SSHCMD=/usr/libexec/unison/sshcmd
 Environment="ARGS=-logfile=/dev/null -terse -repeat=watch -auto -batch"
 EnvironmentFile=-%h/.unison/service-config
-ExecStart=/usr/bin/unison -ui=text $ARGS $PROFILE
+ExecStart=/usr/bin/unison -ui=text -sshcmd=${SSHCMD} $ARGS $PROFILE
 ExecStop=/usr/libexec/unison/stop-unison $MAINPID
 Restart=on-failure
 RestartSec=10
