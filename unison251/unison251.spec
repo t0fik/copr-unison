@@ -277,7 +277,7 @@ fi
 %{_bindir}/unison-fsmonitor-%{ver_compat}
 
 %changelog
-* Sat Jan 10 2021 Jerzy Drozdz <jerzy.drozdz@jdsieci.pl> - 2.51.3-10
+* Sat Jan 09 2021 Jerzy Drozdz <jerzy.drozdz@jdsieci.pl> - 2.51.3-10
 - fsmonitor moved to seperate package
 - disabled building Gtk2 package for EL8
 
