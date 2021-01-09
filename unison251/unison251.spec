@@ -156,7 +156,7 @@ mv src/unison-fsmonitor unison-fsmonitor
 
 %if %{build_docs}
 make NATIVE=true docs
-cp -f doc/unison-manual.html
+cp -f doc/unison-manual.html unison-manual.html
 %else
 cp -f %{SOURCE1} unison-manual.html
 %endif
@@ -256,7 +256,7 @@ fi
 
 
 %files
-%doc src/COPYING src/NEWS src/README doc/unison-manual.html
+%doc src/COPYING src/NEWS src/README unison-manual.html
 %license LICENSE
 
 %if %{include_gtk}
