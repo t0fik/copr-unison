@@ -22,11 +22,22 @@
 # available in this Fedora branch/release? If so, we provide unison.
 %global provide_unison 1
 
+# Gtk2 build isn't working for el8
+# el8 does not provide LaTeX
+%if 0%{?el8}
+%global include_gtk 0
+%global build_docs 0
+%else
+%global include_gtk 1
+%global build_docs 1
+%endif
+
+
 %global git_tag %{ver_maj}.%{ver_min}.%{ver_patch}
 
 Name:      unison%{ver_compat_name}
 Version:   %{ver_compat}%{ver_noncompat}
-Release:   9%{?dist}
+Release:   10%{?dist}
 
 Summary:   Multi-master File synchronization tool
 
@@ -39,9 +50,14 @@ Source0:   https://github.com/bcpierce00/unison/archive/v%{git_tag}/unison-%{ver
 ExcludeArch:   sparc64 s390 s390x
 
 BuildRequires: ocaml
+
+%if %{build_docs}
 BuildRequires: /usr/bin/latex
 BuildRequires: /usr/bin/hevea
 BuildRequires: /usr/bin/lynx
+%else
+Source1:  https://www.cis.upenn.edu/~bcpierce/unison/download/releases/unison-2.51.2/unison-2.51.2-manual.html
+%endif
 
 Requires:   %{name}-ui = %{version}-%{release}
 
@@ -60,6 +76,7 @@ will never be upgraded to a different major version. Other packages
 exist if you require a different major version.
 
 
+%if %{include_gtk}
 %package gtk
 
 Summary:   Multi-master File synchronization tool - gtk interface
@@ -69,6 +86,7 @@ BuildRequires: gtk2-devel
 BuildRequires: desktop-file-utils
 
 Requires: %name = %{version}-%{release}
+Recommends: %name-fsmonitor = %{version}-%{release}
 
 Provides:   %{name}-ui = %{version}-%{release}
 
@@ -81,19 +99,30 @@ Provides: unison = %{version}-%{release}
 
 %description gtk
 This package provides the graphical version of unison with gtk2 interface.
-
+%endif
 
 %package text
 
 Summary:   Multi-master File synchronization tool - text interface
 
 Requires: %name = %{version}-%{release}
+Recommends: %name-fsmonitor = %{version}-%{release}
 
 Provides:   %{name}-ui = %{version}-%{release}
 
 %description text
 This package provides the textual version of unison without graphical interface.
 
+%package fsmonitor
+
+Summary:   Multi-master File synchronization tool - fsmonitor
+
+Requires: %name = %{version}-%{release}
+
+Provides:   %{name}-fsmonitor = %{version}-%{release}
+
+%description fsmonitor
+This package provides the fsmonitor functionality of unison.
 
 %prep
 %setup -q -n unison-%{git_tag}
@@ -115,38 +144,43 @@ EOF
 # MAKEFLAGS=-j<N> breaks the build.
 unset MAKEFLAGS
 
+%if %{include_gtk}
 # we compile 2 versions: gtk2 ui and text ui
 make NATIVE=true UISTYLE=gtk2 THREADS=true OCAMLOPT="ocamlopt -g" src
 mv src/unison unison-gtk
+%endif
 
 make NATIVE=true UISTYLE=text THREADS=true OCAMLOPT="ocamlopt -g" src
 mv src/unison unison-text
 mv src/unison-fsmonitor unison-fsmonitor
 
+%if %{build_docs}
 make NATIVE=true docs
+cp -f doc/unison-manual.html
+%else
+cp -f %{SOURCE1} unison-manual.html
+%endif
 
 %install
 
+%if %{include_gtk}
 install -m 755 -D unison-gtk %{buildroot}%{_bindir}/unison-gtk-%{ver_compat}
 # symlink for compatibility
 ln -s %{_bindir}/unison-gtk-%{ver_compat} %{buildroot}%{_bindir}/unison-%{ver_compat}
-
-install -m 755 -D unison-text %{buildroot}%{_bindir}/unison-text-%{ver_compat}
-install -m 755 -D unison-fsmonitor %{buildroot}%{_bindir}/unison-fsmonitor-%{ver_compat}
-
-#mkdir -p %{buildroot}%{_datadir}/pixmaps
-#cp -a %{SOURCE1} %{buildroot}%{_datadir}/pixmaps/%{name}.png
 install -D icons/U.svg %{buildroot}%{_datadir}/pixmaps/%{name}.svg
 
 desktop-file-install --dir %{buildroot}%{_datadir}/applications \
     %{name}.desktop
+%endif
 
-
+install -m 755 -D unison-text %{buildroot}%{_bindir}/unison-text-%{ver_compat}
+install -m 755 -D unison-fsmonitor %{buildroot}%{_bindir}/unison-fsmonitor-%{ver_compat}
 
 # create/own alternatives target
 touch %{buildroot}%{_bindir}/unison
 
 
+%if %{include_gtk}
 %posttrans gtk
 alternatives \
   --install \
@@ -169,7 +203,7 @@ if [ $1 -eq 0 ]; then
   alternatives --remove unison-fsmonitor \
     %{_bindir}/unison-fsmonitor-%{ver_compat}  
 fi
-
+%endif
 
 %posttrans text
 alternatives \
@@ -205,25 +239,48 @@ if [ $1 -eq 0 ]; then
 fi
 
 
+%posttrans fsmonitor
+alternatives \
+  --install \
+  %{_bindir}/unison-fsmonitor \
+  unison-fsmonitor \
+  %{_bindir}/unison-fsmonitor-%{ver_compat} \
+  %{ver_priority}
+
+
+%postun fsmonitor
+if [ $1 -eq 0 ]; then
+  alternatives --remove unison-fsmonitor \
+    %{_bindir}/unison-fsmonitor-%{ver_compat}
+fi
+
+
 %files
 %doc src/COPYING src/NEWS src/README doc/unison-manual.html
 %license LICENSE
 
+%if %{include_gtk}
 %files gtk
 %ghost %{_bindir}/unison
 %{_bindir}/unison-gtk-%{ver_compat}
 %{_bindir}/unison-%{ver_compat}
-%{_bindir}/unison-fsmonitor-%{ver_compat}
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/pixmaps/%{name}.svg
+%endif
 
 %files text
 %ghost %{_bindir}/unison
 %{_bindir}/unison-text-%{ver_compat}
+
+%files fsmonitor
+%ghost %{_bindir}/unison-fsmonitor
 %{_bindir}/unison-fsmonitor-%{ver_compat}
 
-
 %changelog
+* Sat Jan 10 2021 Jerzy Drozdz <jerzy.drozdz@jdsieci.pl> - 2.51.3-10
+- fsmonitor moved to seperate package
+- disabled building Gtk2 package for EL8
+
 * Fri Dec 04 2020 Jerzy Drozdz <jerzy.drozdz@jdsieci.pl> - 2.51.3-9
 - Service file moved to seperate package
 
