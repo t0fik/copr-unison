@@ -44,6 +44,7 @@ Summary:   Multi-master File synchronization tool
 License:   GPLv3+
 URL:       http://www.cis.upenn.edu/~bcpierce/unison
 Source0:   https://github.com/bcpierce00/unison/archive/v%{git_tag}/unison-%{version}.tar.gz
+Source1:  https://www.cis.upenn.edu/~bcpierce/unison/download/releases/unison-2.51.2/unison-2.51.2-manual.html
 
 # can't make this noarch (rpmbuild fails about unpackaged debug files)
 # BuildArch:     noarch
@@ -55,8 +56,6 @@ BuildRequires: ocaml
 BuildRequires: /usr/bin/latex
 BuildRequires: /usr/bin/hevea
 BuildRequires: /usr/bin/lynx
-%else
-Source1:  https://www.cis.upenn.edu/~bcpierce/unison/download/releases/unison-2.51.2/unison-2.51.2-manual.html
 %endif
 
 Requires:   %{name}-ui = %{version}-%{release}
