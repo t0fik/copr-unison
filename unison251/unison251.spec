@@ -142,6 +142,7 @@ EOF
 %build
 # MAKEFLAGS=-j<N> breaks the build.
 unset MAKEFLAGS
+unset CFLAGS
 
 %if %{include_gtk}
 # we compile 2 versions: gtk2 ui and text ui
