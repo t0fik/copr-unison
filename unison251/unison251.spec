@@ -166,7 +166,7 @@ cp -f %{SOURCE1} unison-manual.html
 %if %{include_gtk}
 install -m 755 -D unison-gtk %{buildroot}%{_bindir}/unison-gtk-%{ver_compat}
 # symlink for compatibility
-ln -s %{_bindir}/unison-gtk-%{ver_compat} %{buildroot}%{_bindir}/unison-%{ver_compat}
+ln -s unison-gtk-%{ver_compat} %{buildroot}%{_bindir}/unison-%{ver_compat}
 install -D icons/U.svg %{buildroot}%{_datadir}/pixmaps/%{name}.svg
 
 desktop-file-install --dir %{buildroot}%{_datadir}/applications \
