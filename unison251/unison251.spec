@@ -276,7 +276,7 @@ fi
 %{_bindir}/unison-fsmonitor-%{ver_compat}
 
 %changelog
-* Mon Sep 15 2022 Jerzy Drozdz <jerzy.drozdz@jdsieci.pl> - 2.52.1-2
+* Mon Aug 15 2022 Jerzy Drozdz <jerzy.drozdz@jdsieci.pl> - 2.51.5-2
 - EL9 package
 
 * Wed Jul 20 2022 Jerzy Drozdz <jerzy.drozdz@jdsieci.pl> - 2.51.5-1
