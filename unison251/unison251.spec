@@ -22,14 +22,13 @@
 # available in this Fedora branch/release? If so, we provide unison.
 %global provide_unison 1
 
-# Gtk2 build isn't working for el8
-# el8 does not provide LaTeX
-%if 0%{?el8}
-%global include_gtk 0
-%global build_docs 0
-%else
 %global include_gtk 1
 %global build_docs 1
+# Gtk2 build isn't working for el8
+# el8 and newer does not provide LaTeX
+%if 0%{?el8}%{?el9}
+%global include_gtk 0
+%global build_docs 0
 %endif
 
 
@@ -277,6 +276,9 @@ fi
 %{_bindir}/unison-fsmonitor-%{ver_compat}
 
 %changelog
+* Mon Sep 15 2022 Jerzy Drozdz <jerzy.drozdz@jdsieci.pl> - 2.52.1-2
+- EL9 package
+
 * Wed Jul 20 2022 Jerzy Drozdz <jerzy.drozdz@jdsieci.pl> - 2.51.5-1
 - Update to 2.51.5
 
