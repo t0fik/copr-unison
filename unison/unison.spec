@@ -80,8 +80,8 @@ exist if you require a different major version.
 
 Summary:   Multi-master File synchronization tool - gtk interface
 
-BuildRequires: ocaml-lablgtk-devel
-BuildRequires: gtk2-devel
+BuildRequires: ocaml-lablgtk3-devel
+BuildRequires: gtk3-devel
 BuildRequires: desktop-file-utils
 
 Requires: %name = %{version}-%{release}
@@ -143,7 +143,7 @@ unset CFLAGS
 
 %if %{include_gtk}
 # we compile 2 versions: gtk2 ui and text ui
-make NATIVE=true UISTYLE=gtk2 THREADS=true OCAMLOPT="ocamlopt -g" src
+make NATIVE=true UISTYLE=gtk3 THREADS=true OCAMLOPT="ocamlopt -g" src
 mv src/unison unison-gtk
 %endif
 
