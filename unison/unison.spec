@@ -1,8 +1,8 @@
 
 # These is the exact upstream version we are packaging
 %global ver_maj 2
-%global ver_min 52
-%global ver_patch 1
+%global ver_min 53
+%global ver_patch 0
 
 # All Unison versions sharing ver_compat are compatible
 # Examples are 2.13.15 and 2.13.16 -> ver_compat == 2.13
@@ -36,7 +36,7 @@
 
 Name:      unison
 Version:   %{ver_compat}%{ver_noncompat}
-Release:   2%{?dist}
+Release:   1%{?dist}
 
 Summary:   Multi-master File synchronization tool
 
@@ -274,6 +274,9 @@ fi
 %{_bindir}/unison-fsmonitor-%{ver_compat}
 
 %changelog
+* Wed Dec 28 2022 Jerzy Drożdż <jerzy.drozdz@jdsieci.pl> - 2.53.0-1
+- Update to 2.53.0
+
 * Mon Aug 15 2022 Jerzy Drozdz <jerzy.drozdz@jdsieci.pl> - 2.52.1-2
 - EL9 package
 
