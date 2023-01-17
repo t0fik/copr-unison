@@ -1,0 +1,22 @@
+.copr_build:
+  rules:
+    - changes:
+        - ${package_name}/**/*
+  script:
+    - "curl -H 'Content-Type: application/json' --data '{}' -X POST https://copr.fedorainfracloud.org/webhooks/custom/36933/9e162a3e-456b-4513-a1e9-ea11e7a5a8f0/${package_name}/"
+
+build unison:
+  extends: .copr_build
+  variables:
+    package_name: unison
+
+build unison-service:
+  extends: .copr_build
+  variables:
+    package_name: unison-service
+
+build unison251:
+  extends: .copr_build
+  variables:
+    package_name: unison251
+

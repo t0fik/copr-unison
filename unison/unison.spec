@@ -36,7 +36,7 @@
 
 Name:      unison
 Version:   %{ver_compat}%{ver_noncompat}
-Release:   1%{?dist}
+Release:   2%{?dist}
 
 Summary:   Multi-master File synchronization tool
 
@@ -92,7 +92,7 @@ Provides:   %{name}-ui = %{version}-%{release}
 
 
 %description gtk
-This package provides the graphical version of unison with gtk2 interface.
+This package provides the graphical version of unison with gtk3 interface.
 %endif
 
 %package text
@@ -172,6 +172,7 @@ desktop-file-install --dir %{buildroot}%{_datadir}/applications \
 
 install -m 755 -D unison-text %{buildroot}%{_bindir}/unison-text-%{ver_compat}
 install -m 755 -D unison-fsmonitor %{buildroot}%{_bindir}/unison-fsmonitor-%{ver_compat}
+install -m 644 -D man/unison.1 %{buildroot}%{_mandir}/man1/unison.1
 
 # create/own alternatives target
 touch %{buildroot}%{_bindir}/unison
@@ -186,19 +187,10 @@ alternatives \
   %{_bindir}/unison-%{ver_compat} \
   %{ver_priority}
 
-alternatives \
-  --install \
-  %{_bindir}/unison-fsmonitor \
-  unison-fsmonitor \
-  %{_bindir}/unison-fsmonitor-%{ver_compat} \
-  %{ver_priority}
-
 %postun gtk
 if [ $1 -eq 0 ]; then
   alternatives --remove unison \
     %{_bindir}/unison-%{ver_compat}
-  alternatives --remove unison-fsmonitor \
-    %{_bindir}/unison-fsmonitor-%{ver_compat}  
 fi
 %endif
 
@@ -217,24 +209,13 @@ alternatives \
   %{_bindir}/unison-text-%{ver_compat} \
   %{ver_priority}
 
-alternatives \
-  --install \
-  %{_bindir}/unison-fsmonitor \
-  unison-fsmonitor \
-  %{_bindir}/unison-fsmonitor-%{ver_compat} \
-  %{ver_priority}
-
-
 %postun text
 if [ $1 -eq 0 ]; then
   alternatives --remove unison \
     %{_bindir}/unison-text-%{ver_compat}
   alternatives --remove unison-text \
     %{_bindir}/unison-text-%{ver_compat}
-  alternatives --remove unison-fsmonitor \
-    %{_bindir}/unison-fsmonitor-%{ver_compat}  
 fi
-
 
 %posttrans fsmonitor
 alternatives \
@@ -244,7 +225,6 @@ alternatives \
   %{_bindir}/unison-fsmonitor-%{ver_compat} \
   %{ver_priority}
 
-
 %postun fsmonitor
 if [ $1 -eq 0 ]; then
   alternatives --remove unison-fsmonitor \
@@ -253,8 +233,9 @@ fi
 
 
 %files
-%doc src/COPYING src/README unison-manual.html
+%doc src/README unison-manual.html
 %license LICENSE
+%{_mandir}/man1/*
 
 %if %{include_gtk}
 %files gtk
@@ -274,6 +255,10 @@ fi
 %{_bindir}/unison-fsmonitor-%{ver_compat}
 
 %changelog
+* Wed Jan 18 2023 Jerzy Drożdż <jerzy.drozdz@jdsieci.pl> - 2.53.0-2
+- Fixed manpage installation
+- Removed fsmonitor alternatives mangling from text and gtk packages
+
 * Wed Dec 28 2022 Jerzy Drożdż <jerzy.drozdz@jdsieci.pl> - 2.53.0-1
 - Update to 2.53.0
 
